@@ -1,0 +1,7 @@
+Steps to create and use a dll in VB 6.0 :
+
+1.Start VB .Select New from file menu.Then select ActiveX dll from Project tab.Enter the project name,then click Ok and write the code in Activex dll class manual.
+2.Then save the project and class modules and make dll through file menu.
+3.Then goto the original application project i.e calculator.
+4.Add a DLL component through the project reference and browse for the dll project that is created.
+5.Then create the object for dll and call the function for particular event and finally run the program.

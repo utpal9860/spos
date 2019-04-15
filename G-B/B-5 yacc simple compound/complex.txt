@@ -1,0 +1,99 @@
+**********sen.l**************
+%{
+%}
+alpha [A-Za-z]
+digit [0-9]
+%%
+[ \t\n]
+and return AND;
+or return OR;
+but return BUT;
+BUT return CBUT;
+OR return COR;
+AND return CAND;
+
+
+{alpha}({alpha}|{digit})* return ID;
+
+.  return yytext[0];
+%%
+
+
+*************sen.y*************
+%{
+#include<stdio.h>
+#include<stdlib.h>
+int flag=0;
+%}
+%token AND OR BUT CAND COR CBUT ID 
+
+%%
+
+S : ST {printf("Compound statement\n"); } 
+   S
+   {
+   $$=$1;
+   }
+  |error 
+   {
+    flag++; 
+    yyerror;
+    yyclearin;
+    display(flag);
+    
+   }
+  S
+   {
+   $$=$1;
+   }
+   ;
+ST      :ID AND ID'.'
+	|ID OR ID'.'
+        |ID BUT ID'.'
+	|ID CAND ID'.'
+	|ID COR ID'.'
+	|ID CBUT ID'.'
+    	;	
+
+%%
+
+#include "lex.yy.c"
+void display(int flag)
+{
+if(flag%2==0)
+{
+printf("Simple statement\n");
+}
+}
+main()
+{
+
+yyin=fopen("input.txt","r");  
+ yyparse();   
+fclose(yyin);
+exit(0);
+} 
+int yywrap()  
+{  
+return 0;  
+}  
+ yyerror()
+{
+ yyclearin;
+}
+*****input.txt****
+I and him.
+It is ok.
+good for life.
+Yes or no.
+
+*****output****
+[student@localhost ~]$ lex sen.l
+[student@localhost ~]$ yacc sen.y
+[student@localhost ~]$ gcc -o sen y.tab.c
+[student@localhost ~]$ ./sen input.txt
+Compound statement
+Simple statement
+Simple statement
+Compound statement
+

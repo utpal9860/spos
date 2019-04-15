@@ -1,0 +1,8 @@
+opname    opcode       Length
+MOVER 04 1
+MOVEM 05 1
+ADD 01 1
+SUB 02 1
+MUL 03 1
+PRINT 10 1
+STOP 00 1
